@@ -43,6 +43,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.jewelryapp.addNew.AddNewActivity
 import com.example.jewelryapp.data.JewelryRepository
 import com.example.jewelryapp.detailedView.DetailedView
+import com.example.jewelryapp.edit.EditJewelry
 import com.example.jewelryapp.list.JewelryList
 import com.example.jewelryapp.navigation.Navigation
 import com.example.jewelryapp.navigation.Screens
@@ -78,7 +79,9 @@ fun Navigation(navController: NavHostController, context: Context) {
                         context.startActivity(Intent(context, AddNewActivity::class.java))
                     }, onJewelryClick = { jewelryId ->
                         navController.navigate("detailedView/$jewelryId")
-                    }, navController = navController
+                    }, onEditJewelryClick = { jewelryId ->
+                        navController.navigate("edit/$jewelryId")
+                    }
                     )
                 }
 
@@ -94,6 +97,12 @@ fun Navigation(navController: NavHostController, context: Context) {
                     route = "detailedView/{jewelryId}"
                 ) { backStackEntry ->
                     DetailedView(jewelryId = backStackEntry.arguments?.getString("jewelryId")!!)
+                }
+
+                composable(
+                    route = "edit/{jewelryId}"
+                ) { backStackEntry ->
+                    EditJewelry(jewelryId = backStackEntry.arguments?.getString("jewelryId")!!)
                 }
             }
         }

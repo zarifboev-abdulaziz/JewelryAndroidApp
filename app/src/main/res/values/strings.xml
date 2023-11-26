@@ -5,6 +5,7 @@
     <string name="btn_add_new_movie">Add new movie</string>
     <string name="btn_go_player">Go to Player</string>
     <string name="title_activity_add_new_jewelry">Add New Jewelry</string>
+    <string name="title_page_edit_jewelry">Edit Jewelry</string>
     <string name="jewelry_title_input_label">Title:</string>
     <string name="jewelry_desc_input_label">Description:</string>
     <string name="jewelry_size_input_label">Size:</string>
@@ -18,6 +19,7 @@
     <string name="movie_rating_menu_hint">Movie rating</string>
     <string name="jewelry_all_fields_compulsory_warning">All fields are compulsory!</string>
     <string name="save_btn_text">Save</string>
+    <string name="edit_btn_text">Edit</string>
     <string name="profile_page_placeholder">Player will be here</string>
     <string name="saved_success_msg">Saved</string>
     <string name="saved_fail_msg">Failed to save</string>

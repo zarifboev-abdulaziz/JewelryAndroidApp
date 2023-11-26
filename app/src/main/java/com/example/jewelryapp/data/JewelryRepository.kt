@@ -63,7 +63,7 @@ class JewelryRepository {
                 jewelryRequest
             )
 
-            Log.d("Update_response", response.toString())
+            Log.d("Insert jewelry response", response.toString())
         } catch (e: Exception) {
             e.printStackTrace()
             return null
@@ -96,6 +96,36 @@ class JewelryRepository {
             return null
         }
         return null
+    }
+
+    suspend fun updateJewelry(jewelry: Jewelry): MyResponse? {
+        val response: MyResponse
+
+        try {
+            val jewelryRequest =
+                JewelryRequest(
+                    title = jewelry.title,
+                    description = jewelry.description,
+                    price = jewelry.price,
+                    size = jewelry.size,
+                    material = jewelry.material,
+                    isCertified = jewelry.isCertified,
+                    imageUrl = jewelry.imageUrl
+                )
+
+            response = RetrofitInstance.jewelryService.updateJewelry(
+                jewelry.id,
+                STUDENT_ID,
+                jewelryRequest
+            )
+
+            Log.d("Update jewelry response", response.toString())
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return null
+        }
+
+        return response
     }
 }
 
