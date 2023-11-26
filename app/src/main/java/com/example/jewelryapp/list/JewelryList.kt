@@ -59,7 +59,7 @@ fun JewelryList(
     onMenuClicked: () -> Unit,
     onAddNewJewelryClick: () -> Unit,
     onJewelryClick: (String) -> Unit = {},
-    navController: NavHostController
+    onEditJewelryClick: (String) -> Unit = {}
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         TopAppBar(
@@ -111,7 +111,7 @@ fun JewelryList(
                         .padding(0.dp, 0.dp, 0.dp, 90.dp)
                 ) {
                     items(items = jewelries!!.toList(), itemContent = { item ->
-                        JewelryItem(jewelry = item, onJewelryClick)
+                        JewelryItem(jewelry = item, onJewelryClick, onEditJewelryClick)
                     })
                 }
             }
@@ -122,7 +122,7 @@ fun JewelryList(
 
 
 @Composable
-private fun JewelryItem(jewelry: Jewelry, onJewelryClick: (String) -> Unit) {
+private fun JewelryItem(jewelry: Jewelry, onJewelryClick: (String) -> Unit, onEditJewelryClick: (String) -> Unit) {
     ElevatedCard(
         modifier = Modifier
             .padding(12.dp),
@@ -164,7 +164,7 @@ private fun JewelryItem(jewelry: Jewelry, onJewelryClick: (String) -> Unit) {
                 JewelryItemTitle(jewelry.title)
                 JewelryItemPrice(jewelry.price.toString())
                 JewelryItemMaterial(jewelry.material!!, jewelry.isCertified!!)
-                JewelryItemActions()
+                JewelryItemActions(jewelry.id, onEditJewelryClick)
             }
         }
     }
@@ -216,10 +216,10 @@ private fun JewelryItemMaterial(material: String, isCertified: Boolean) {
 }
 
 @Composable
-private fun JewelryItemActions() {
+private fun JewelryItemActions(jewelryId: String, onEditJewelryClick: (String) -> Unit) {
     Row {
         Button(
-            onClick = { /* TODO: Handle edit */ },
+            onClick = { onEditJewelryClick(jewelryId) },
             modifier = Modifier
                 .height(33.dp)  // Set the height of the button
                 .width(80.dp),
