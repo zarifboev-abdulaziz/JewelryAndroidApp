@@ -30,7 +30,7 @@ class JewelryRepository {
                             price = jewelryFromResponse.price,
                             size = jewelryFromResponse.size,
                             material = jewelryFromResponse.material,
-                            isCertified = jewelryFromResponse.isCertified,
+                            isCertified = jewelryFromResponse.isCertified == "1",
                             imageUrl = jewelryFromResponse.imageUrl
                         )
                     )
@@ -86,7 +86,7 @@ class JewelryRepository {
                     price = jewelryFromResponse.price,
                     size = jewelryFromResponse.size,
                     material = jewelryFromResponse.material,
-                    isCertified = jewelryFromResponse.isCertified,
+                    isCertified = jewelryFromResponse.isCertified == "1",
                     imageUrl = jewelryFromResponse.imageUrl
                 )
             }
