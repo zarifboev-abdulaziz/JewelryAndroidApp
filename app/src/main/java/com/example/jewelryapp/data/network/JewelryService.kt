@@ -3,6 +3,7 @@ package com.example.jewelryapp.data.network
 import com.example.jewelryapp.data.network.jewelry.JewelryRequest
 import com.example.jewelryapp.data.network.jewelry.JewelryResponse
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
@@ -32,5 +33,11 @@ interface JewelryService {
         @Path("record_id") record_id: String,
         @Query("student_id") student_id: String,
         @Body jewelry: JewelryRequest,
+    ): MyItemResponse<JewelryResponse>
+
+    @DELETE("records/{record_id}")
+    suspend fun deleteJewelry(
+        @Path("record_id") record_id: String,
+        @Query("student_id") student_id: String,
     ): MyItemResponse<JewelryResponse>
 }
