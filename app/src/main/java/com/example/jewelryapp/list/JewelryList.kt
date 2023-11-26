@@ -175,7 +175,8 @@ private fun JewelryItemTitle(title: String) {
     Text(
         text = title,
         fontSize = 21.sp,
-        fontWeight = FontWeight.SemiBold,
+        fontStyle = FontStyle.Italic,
+        fontWeight = FontWeight.Normal,
         modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 5.dp)
     )
 }
