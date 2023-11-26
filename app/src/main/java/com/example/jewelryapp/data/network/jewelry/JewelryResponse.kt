@@ -16,7 +16,7 @@ data class JewelryResponse(
     @SerializedName("type")
     val material: String?,
     @SerializedName("is_it_true")
-    val isCertified: Boolean?,
+    val isCertified: String?,
     @SerializedName("url")
     val imageUrl: String?,
 )

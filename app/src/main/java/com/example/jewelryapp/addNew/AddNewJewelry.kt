@@ -6,6 +6,7 @@ import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -64,7 +65,7 @@ fun AddNewJewelry(
             Spacer(Modifier.height(15.dp))
             TitleInput(title = title.value, onTitleChange = { title.value = it })
 
-            Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(15.dp))
             DescriptionInput(description = description.value, onDescriptionChange = { description.value = it })
 
             Spacer(modifier = Modifier.height(15.dp))
@@ -137,42 +138,62 @@ private fun CreateNewJewelryPageTitle() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TitleInput(title: String, onTitleChange: (String) -> Unit) {
+    Text(
+        modifier = Modifier.padding(bottom = 3.dp),
+        text = stringResource(id = R.string.jewelry_title_input_label),
+        color = Color.Black,
+        fontSize = 18.sp,
+        fontFamily = FontFamily.SansSerif
+    )
+
     TextField(modifier = Modifier.fillMaxWidth(),
         colors = TextFieldDefaults.textFieldColors(
-            textColor = Color.Black, containerColor = colorResource(id = R.color.bleak_yellow_light)
+            textColor = Color.Black, containerColor = colorResource(id = R.color.input_field_grey)
         ),
         value = title,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
         onValueChange = { onTitleChange(it) },
-        label = {
-            Text(stringResource(id = R.string.jewelry_title_input_hint))
-        })
+  )
 }
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DescriptionInput(description: String, onDescriptionChange: (String) -> Unit) {
+    Text(
+        modifier = Modifier.padding(bottom = 3.dp),
+        text = stringResource(id = R.string.jewelry_desc_input_label),
+        color = Color.Black,
+        fontSize = 18.sp,
+        fontFamily = FontFamily.SansSerif
+    )
+
     TextField(modifier = Modifier
         .fillMaxWidth()
         .height(150.dp),
         colors = TextFieldDefaults.textFieldColors(
-            textColor = Color.Black, containerColor = colorResource(id = R.color.bleak_yellow_light)
+            textColor = Color.Black, containerColor = colorResource(id = R.color.input_field_grey)
         ),
         value = description,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-        onValueChange = { onDescriptionChange(it) },
-        label = {
-            Text(stringResource(id = R.string.jewelry_desc_input_hint))
-        })
+        onValueChange = { onDescriptionChange(it) }
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun Price(price: String, onPriceChanged: (String) -> Unit) {
+    Text(
+        modifier = Modifier.padding(bottom = 3.dp),
+        text = stringResource(id = R.string.jewelry_price_input_label),
+        color = Color.Black,
+        fontSize = 18.sp,
+        fontFamily = FontFamily.SansSerif
+    )
+
     TextField(modifier = Modifier.fillMaxWidth(),
         colors = TextFieldDefaults.textFieldColors(
-            textColor = Color.Black, containerColor = colorResource(id = R.color.bleak_yellow_light)
+            textColor = Color.Black, containerColor = colorResource(id = R.color.input_field_grey)
         ),
         value = price,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -194,14 +215,14 @@ private fun Size(size: String, onSizeChanged: (String) -> Unit) {
             modifier = Modifier.padding(bottom = 3.dp),
             text = stringResource(id = R.string.jewelry_size_input_label),
             color = Color.Black,
-            fontSize = 16.sp,
+            fontSize = 18.sp,
             fontFamily = FontFamily.SansSerif
         )
 
         TextField(modifier = Modifier.fillMaxWidth(),
             colors = TextFieldDefaults.textFieldColors(
                 textColor = Color.Black,
-                containerColor = colorResource(id = R.color.bleak_yellow_light)
+                containerColor = colorResource(id = R.color.input_field_grey)
             ),
             value = size,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -215,30 +236,38 @@ private fun Size(size: String, onSizeChanged: (String) -> Unit) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun MaterialInput(material: String, onMaterialChange: (String) -> Unit) {
+    Text(
+        modifier = Modifier.padding(bottom = 3.dp),
+        text = stringResource(id = R.string.jewelry_material_input_label),
+        color = Color.Black,
+        fontSize = 18.sp,
+        fontFamily = FontFamily.SansSerif
+    )
+
     TextField(
         modifier = Modifier
-            .fillMaxWidth()
-            .height(120.dp),
+            .fillMaxWidth(),
         colors = TextFieldDefaults.textFieldColors(
             textColor = Color.Black,
-            containerColor = colorResource(id = R.color.bleak_yellow_light)
+            containerColor = colorResource(id = R.color.input_field_grey)
         ),
         value = material,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-        onValueChange = { onMaterialChange(it) },
-        label = {
-            Text(stringResource(id = R.string.jewelry_material_input_hint))
-        }
+        onValueChange = { onMaterialChange(it) }
     )
 }
 
 
 @Composable
 private fun Certified(certified: Boolean, onCertifiedChange: (Boolean) -> Unit) {
-    Row(modifier = Modifier
-        .fillMaxWidth()
-        .height(120.dp)) {
-        Text(text = "Is Certified")
+    Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+        Text(
+            modifier = Modifier.padding(bottom = 3.dp),
+            text = stringResource(id = R.string.jewelry_certified_input_label),
+            color = Color.Black,
+            fontSize = 18.sp,
+            fontFamily = FontFamily.SansSerif
+        )
         Spacer(modifier = Modifier.width(8.dp))
         Checkbox(checked = certified, onCheckedChange = onCertifiedChange)
     }
@@ -247,13 +276,20 @@ private fun Certified(certified: Boolean, onCertifiedChange: (Boolean) -> Unit) 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ImageUrl(imageUrl: String, onUrlChange: (String) -> Unit) {
+    Text(
+        modifier = Modifier.padding(bottom = 3.dp),
+        text = stringResource(id = R.string.jewelry_image_input_label),
+        color = Color.Black,
+        fontSize = 18.sp,
+        fontFamily = FontFamily.SansSerif
+    )
+
     TextField(
         modifier = Modifier
-            .fillMaxWidth()
-            .height(120.dp),
+            .fillMaxWidth(),
         colors = TextFieldDefaults.textFieldColors(
             textColor = Color.Black,
-            containerColor = colorResource(id = R.color.bleak_yellow_light)
+            containerColor = colorResource(id = R.color.input_field_grey)
         ),
         value = imageUrl,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
@@ -275,9 +311,9 @@ private fun AddNewButton(onClick: () -> Unit) {
             .height(85.dp)
             .padding(vertical = 16.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = colorResource(id = R.color.bleak_yellow), contentColor = Color.Black
-        )
-
+            containerColor = colorResource(id = R.color.save_btn_color), contentColor = Color.White
+        ),
+        shape = RoundedCornerShape(10.dp)
     ) {
         Text(
             fontSize = 17.sp, text = stringResource(id = R.string.save_btn_text)
