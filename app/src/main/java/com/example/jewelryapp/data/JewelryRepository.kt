@@ -127,5 +127,24 @@ class JewelryRepository {
 
         return response
     }
+
+    suspend fun deleteJewelry(jewelryId: String): MyResponse? {
+        val response: MyResponse
+
+        try {
+
+            response = RetrofitInstance.jewelryService.deleteJewelry(
+                jewelryId,
+                STUDENT_ID
+            )
+
+            Log.d("Delete jewelry response", response.toString())
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return null
+        }
+
+        return response
+    }
 }
 

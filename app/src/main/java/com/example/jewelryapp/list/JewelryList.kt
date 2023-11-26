@@ -1,5 +1,6 @@
 package com.example.jewelryapp.list
 
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -31,12 +32,16 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
@@ -45,10 +50,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import com.example.jewelryapp.MainActivity
 import com.example.jewelryapp.data.JewelryRepository
 import com.example.jewelryapp.data.dataClasses.Jewelry
 
 import com.example.jewelryapp.R
+import com.example.jewelryapp.delete.ConfirmDeleteDialog
+import com.example.jewelryapp.delete.deleteJewelryObject
 
 //val jostFont = FontFamily(Font(R.font.jost_regular))
 
@@ -61,6 +69,10 @@ fun JewelryList(
     onJewelryClick: (String) -> Unit = {},
     onEditJewelryClick: (String) -> Unit = {}
 ) {
+    val localContext = LocalContext.current
+    val showDialog = remember { mutableStateOf(false) }
+    val itemToDelete = remember { mutableStateOf("") }
+
     Column(modifier = Modifier.fillMaxSize()) {
         TopAppBar(
             title = {
@@ -68,12 +80,14 @@ fun JewelryList(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+
                     Spacer(modifier = Modifier.weight(1f)) // Spacer to push the title to center
                     Text(
                         text = "Luxury Store",
                         fontStyle = FontStyle.Italic,
                         color = Color.White,
                         fontSize = 25.sp
+
                     )
                     Spacer(modifier = Modifier.weight(1f)) // Spacer to push the title to center
                 }
@@ -111,18 +125,38 @@ fun JewelryList(
                         .padding(0.dp, 0.dp, 0.dp, 90.dp)
                 ) {
                     items(items = jewelries!!.toList(), itemContent = { item ->
-                        JewelryItem(jewelry = item, onJewelryClick, onEditJewelryClick)
+                        JewelryItem(jewelry = item, onJewelryClick, onEditJewelryClick, showDialog, itemToDelete)
                     })
                 }
             }
         }
     }
+
+
+    if (showDialog.value) {
+        ConfirmDeleteDialog(
+            onConfirm = {
+                showDialog.value = false
+                deleteJewelryObject(itemToDelete.value)
+                localContext.startActivity(Intent(localContext, MainActivity::class.java))
+            },
+            onDismiss = {
+                showDialog.value = false
+                itemToDelete.value = ""
+            }
+        )
+    }
 }
 
 
-
 @Composable
-private fun JewelryItem(jewelry: Jewelry, onJewelryClick: (String) -> Unit, onEditJewelryClick: (String) -> Unit) {
+private fun JewelryItem(
+    jewelry: Jewelry,
+    onJewelryClick: (String) -> Unit,
+    onEditJewelryClick: (String) -> Unit,
+    showDialog: MutableState<Boolean>,
+    itemToDelete: MutableState<String>
+) {
     ElevatedCard(
         modifier = Modifier
             .padding(12.dp),
@@ -164,7 +198,7 @@ private fun JewelryItem(jewelry: Jewelry, onJewelryClick: (String) -> Unit, onEd
                 JewelryItemTitle(jewelry.title)
                 JewelryItemPrice(jewelry.price.toString())
                 JewelryItemMaterial(jewelry.material!!, jewelry.isCertified!!)
-                JewelryItemActions(jewelry.id, onEditJewelryClick)
+                JewelryItemActions(jewelry.id, onEditJewelryClick, showDialog, itemToDelete)
             }
         }
     }
@@ -216,7 +250,12 @@ private fun JewelryItemMaterial(material: String, isCertified: Boolean) {
 }
 
 @Composable
-private fun JewelryItemActions(jewelryId: String, onEditJewelryClick: (String) -> Unit) {
+private fun JewelryItemActions(
+    jewelryId: String,
+    onEditJewelryClick: (String) -> Unit,
+    showDialog: MutableState<Boolean>,
+    itemToDelete: MutableState<String>
+) {
     Row {
         Button(
             onClick = { onEditJewelryClick(jewelryId) },
@@ -230,7 +269,10 @@ private fun JewelryItemActions(jewelryId: String, onEditJewelryClick: (String) -
         }
         Spacer(modifier = Modifier.width(10.dp))
         Button(
-            onClick = { /* TODO: Handle delete */ },
+            onClick = {
+                itemToDelete.value = jewelryId // Set the item to delete
+                showDialog.value = true
+            },
             modifier = Modifier
                 .height(33.dp)  // Set the height of the button
                 .width(90.dp),
