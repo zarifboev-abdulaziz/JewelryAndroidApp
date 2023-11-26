@@ -24,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.example.jewelryapp.R
 import com.example.jewelryapp.data.JewelryRepository
 
@@ -40,7 +41,7 @@ fun DetailedView(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(colorResource(R.color.bleak_yellow_light))
+//                .background(colorResource(R.color.bleak_yellow_light))
                 .padding(16.dp)
                 .verticalScroll(
                     rememberScrollState()
@@ -48,40 +49,22 @@ fun DetailedView(
         ) {
             Title(jewelry!!.title)
 
-            MyDivider()
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column() {
-                    if (jewelry!!.price != null) {
-                        Price(jewelry!!.price!!)
-                    }
-
-                    if (jewelry!!.size != null) {
-                        Size(jewelry!!.size!!)
-                    }
-                }
-            }
-
-            MyDivider()
-
-            if (jewelry!!.description != null) {
-                Description(description = jewelry!!.description!!)
-            }
-
-            Spacer(Modifier.height(10.dp))
-
-            Image(
-                painterResource(R.drawable.cinema),
-                stringResource(id = R.string.cinema_icon_desc),
-                contentScale = ContentScale.Crop,
+            AsyncImage(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(0.dp, 20.dp)
+                    .size(width = 370.dp, height = 230.dp)
+                    .padding(bottom = 10.dp),
+                model = jewelry!!.imageUrl,
+                contentDescription = "Jewelry image",
+                placeholder = painterResource(id = R.drawable.default_jewelry_img),
+                error = painterResource(id = R.drawable.default_jewelry_img),
+                contentScale = ContentScale.Crop
             )
+
+            Price(jewelry!!.price.toString())
+            Material(jewelry!!.material!!)
+            Certified(jewelry!!.isCertified!!)
+            Size(jewelry!!.size.toString())
+            Description(description = jewelry!!.description!!)
         }
     }
 }
@@ -90,98 +73,82 @@ fun DetailedView(
 private fun Title(title: String) {
     Text(
         text = title,
-        color = Color.Black,
+        color = Color.DarkGray,
         fontSize = 26.sp,
+        fontStyle = FontStyle.Italic,
         fontWeight = FontWeight.Bold,
         fontFamily = FontFamily.Serif,
-        textAlign = TextAlign.Left
-    )
-}
-
-//Todo to be deleted
-//@Composable
-//private fun Rating(rating: Double) {
-//    Row(verticalAlignment = Alignment.CenterVertically) {
-//        Image(
-//            painterResource(R.drawable.baseline_star_half_24),
-//            stringResource(id = R.string.cinema_icon_desc),
-//            contentScale = ContentScale.Crop
-//        )
-//
-//        Text(
-//            text = rating.toString(),
-//            color = Color.Black,
-//            fontWeight = FontWeight.Bold,
-//            fontSize = 23.sp,
-//            fontFamily = FontFamily.SansSerif,
-//            textAlign = TextAlign.Center
-//        )
-//    }
-//}
-
-@Composable
-private fun Price(price: Double) {
-    Text(
-        modifier = Modifier.padding(bottom = 3.dp),
-        text = stringResource(id = R.string.detailed_view_price_label, price),
-        color = Color.Black,
-        fontSize = 15.sp,
-        fontFamily = FontFamily.SansSerif
+        textAlign = TextAlign.Left,
+        modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 10.dp)
     )
 }
 
 
 @Composable
-private fun Size(size: Int) {
+private fun Price(price: String) {
     Text(
-        modifier = Modifier.padding(bottom = 3.dp),
-        text = size.toString(),
-        color = Color.Black,
-        fontSize = 15.sp,
-        fontFamily = FontFamily.SansSerif
+        text = "$$price",
+        color = colorResource(id = R.color.primary_gold_color),
+        fontSize = 18.sp,
+        fontWeight = FontWeight.SemiBold,
+        modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 8.dp)
+    )
+}
+
+@Composable
+private fun Material(material: String) {
+    Text(
+        text = "Material: $material",
+        fontSize = 18.sp,
+        modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 8.dp)
+    )
+}
+
+@Composable
+private fun Certified(certified: Boolean) {
+    Row(
+        modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 8.dp)
+    ) {
+        Text(
+            text = "Certificate: " + (if (!certified) "-" else ""),
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Normal,
+        )
+        Spacer(modifier = Modifier.width(5.dp))
+        if (certified){
+            Image(
+                painter = painterResource(id = R.drawable.certified_badge),
+                contentDescription = "Certified badge", // Provide appropriate content description
+                modifier = Modifier.size(23.dp), // Adjust size as needed
+                contentScale = ContentScale.Crop
+            )
+        }
+    }
+}
+
+@Composable
+private fun Size(size: String) {
+    Text(
+        modifier = Modifier.padding(bottom = 8.dp),
+        text = "Size: $size",
+        fontSize = 18.sp,
     )
 }
 
 @Composable
 private fun Description(description: String) {
     Text(
-        modifier = Modifier.padding(top = 10.dp),
-        text = description,
-        color = Color.DarkGray,
-        fontSize = 20.sp,
-        fontFamily = FontFamily.SansSerif
+        modifier = Modifier.padding(bottom = 10.dp),
+        text = "Description: $description",
+        color = Color.Black,
+        fontSize = 18.sp,
     )
 }
-
-//Todo to be deleted
-//@Composable
-//private fun Actors(actors: List<String>) {
-//    Column(modifier = Modifier.fillMaxWidth()) {
-//        var i = 0
-//        for (actor in actors) {
-//            ActorTextView(actor = actor, ++i == actors.size)
-//        }
-//    }
-//}
-//
-//@Composable
-//private fun ActorTextView(actor: String, isTheLastOne: Boolean) {
-//    Text(
-//        modifier = Modifier.padding(3.dp, 1.dp),
-//        text = if (isTheLastOne) actor else "$actor,",
-//        color = Color.DarkGray,
-//        fontSize = 19.sp,
-//        fontFamily = FontFamily.SansSerif,
-//        fontStyle = FontStyle.Italic
-//    )
-//}
-
 
 @Composable
 private fun MyDivider() {
     Divider(
         modifier = Modifier.padding(0.dp, 10.dp),
         color = Color.LightGray
-
     )
 }
